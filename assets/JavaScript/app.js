@@ -4,18 +4,28 @@ $(document).ready(function () {
             question: "which state the Dukes of Hazard are from? ",
             options: ["Colorado", "Texas", "Nevada", "Atlanta"],
             answer: "Atlanta",
-            url: "../images/thedukes"
+            url: "./assets/images/thedukes.jpg"
 
         },
         q2: {
             question: "which movie Mel Gibson produce that won an Oscar",
             options: ["The Patriot", "Brave Heart", "Mad Max", "Master and Comander"],
             answer: "Brave Heart",
-            url: "../images/melgiveson"
+            url: "./assets/images/melgiveson.jpg"
+        },
+        q3: {
+            question: "What country is Charlize Theron originary from",
+            options: ["Canada", "England", "Australia", "Sudafrica"],
+            answer: "Sudafrica",
+            url: "./assets/images/charlize.jpg"
+        },
+        q4: {
+            question: "Who is the main actres in the movie El Zorro",
+            options: ["Salma Hayek", "Catherine Z Jones", "Charlize Theron", "Penelope Cruz"],
+            answer: "Catherine Z Jones",
+            url: "./assets/images/catherine.jpg"
         }
     }
-    var btnDisplay = $("#play").css("display");
-    var countDown = 60;
     var interval;
     var theQuestions = [];
     var theQuestion = "";
@@ -26,7 +36,7 @@ $(document).ready(function () {
     var questionCounter = 0;
     var wrong = 0;
     var rigth = 0;
-
+    var countDown;
     //setting body heith
     $("body").height($(window).height());
     $("body").width($(window).width());
@@ -37,7 +47,7 @@ $(document).ready(function () {
 
     function changeContent() {
         //hide the button
-        $("#play").css("display", "none");
+        $("#play").hide();
         //display the counter
         $("#counter").html(`<h1>
                                 Time remainding
@@ -46,7 +56,6 @@ $(document).ready(function () {
         //loads the questions to iterate
         theQuestions = Object.keys(questions);
         theQuestion = theQuestions[questionCounter];
-        interval = setInterval(timer, 1000);
         displayQuestions();
     }
 
@@ -54,16 +63,18 @@ $(document).ready(function () {
         countDown--;
         $("#counterSpan").text(countDown);
         if (countDown === 0) {
-            clearInterval(interval);
-            $("#counter").html("");
-            $("#questionay").html("");
-            $("#play").css("display", btnDisplay);
+            nextQuestion();
         }
     }
-
+    function endGame() {
+        clearInterval(interval);
+        $("#counter").html("");
+        $("#questionary").html("");
+        $("#play").show();
+        questionCounter = 0;
+    }
     function displayQuestions() {
         //retrieve the first question and its values
-        console.log(question + " " + questionCounter);
         question = questions[theQuestion]["question"];
         options = questions[theQuestion]["options"];
         answer = questions[theQuestion]["answer"];
@@ -74,25 +85,42 @@ $(document).ready(function () {
             $("#questionary").append(`<option class = "selection" value ="${element}">
             ${element}</option>`);
         });
+        countDown = 20;
+        interval = setInterval(timer, 1000);
     }
     // evaluating if answer wa right or wrong and adding to next question
     function nextQuestion(pushed) {
         questionCounter++;
         theQuestion = theQuestions[questionCounter];
+        var t;
+        //determines the wright or wrong answer
+        var result = "";
         if (pushed === answer) {
-            var t = setTimeout(function () { $("#questionary").html(`<img src="${url}" class ="image-responsive image"`) }, 500);
-            clearTimeout(t);
+            console.log(url);
+            result = `<h1>Yesss</h1>`;
             rigth++;
-            console.log(rigth);
         } else {
-            setTimeout(function () { $("#questionary").html(`<h1 class = "nope">NOOOOPPPEEE</h1>`) }, 500);
+            result = `<h1> NOOOOPPPEEE</h1>`;
             wrong++;
-            console.log(wrong);
         }
-        if (questionCounter < theQuestions.length) {
-            setTimeout(displayQuestions(), 1000);
+        result += ` <img src = "${url}" class = "image-responsive image" alt = "YESSSS SCORE" >`;
+        $("#questionary").html(result);
+        // starts timer to give enough time to see the pictures before the next question
+        var endTimer = 1;
+        var t = setInterval(function () {
+            endTimer--;
+            if (endTimer === 0) {
+                if (questionCounter < theQuestions.length) {
+                    clearInterval(interval); // clear the last interval before starting a new one
+                    displayQuestions();
+                } else {
+                    endGame();
+                }
+                clearInterval(t);
+            }
         }
-    };
+            , 1000);
+    }
 
     //$(staticAncestors).on(eventName, dynamicChild, function() {});
 
