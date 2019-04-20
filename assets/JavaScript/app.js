@@ -1,40 +1,61 @@
 $(document).ready(function () {
-    //setting body heith
-    $("body").height($(window).height());
-    $("body").width($(window).width());
+    var questions = {
+        q1: {
+            question: "which state the Dukes of Hazard are from? ",
+            options: ["Colorado", "Texas", "Nevada", "Atlanta"],
+            answer: "Atlanta",
+            url: "../images/thedukes"
 
+        },
+        q2: {
+            question: "which movie Mel Gibson produce that won an Oscar",
+            options: ["The Patriot", "Brave Heart", "Mad Max", "Master and Comander"],
+            answer: "Brave Heart",
+            url: "../images/melgiveson"
+        }
+    }
     var btnDisplay = $("#play").css("display");
     var countDown = 60;
     var interval;
     var theQuestions = [];
+    var theQuestion = "";
     var question = "";
     var options = [];
     var answer = "";
     var url = "";
     var questionCounter = 0;
+    var wrong = 0;
+    var rigth = 0;
+
+    //setting body heith
+    $("body").height($(window).height());
+    $("body").width($(window).width());
 
     $("#btn-play").on("click", function () {
         changeContent();
     });
 
     function changeContent() {
-
+        //hide the button
         $("#play").css("display", "none");
-        $("#questionary").html(`<h1>
+        //display the counter
+        $("#counter").html(`<h1>
                                 Time remainding
-                                <span id="counter"> </span> 
+                                <span id="counterSpan"> </span> 
                                 seconds left </h1>`);
+        //loads the questions to iterate
         theQuestions = Object.keys(questions);
+        theQuestion = theQuestions[questionCounter];
         interval = setInterval(timer, 1000);
         displayQuestions();
     }
 
     function timer() {
         countDown--;
-        $("#counter").text(countDown);
+        $("#counterSpan").text(countDown);
         if (countDown === 0) {
-            console.log("error");
             clearInterval(interval);
+            $("#counter").html("");
             $("#questionay").html("");
             $("#play").css("display", btnDisplay);
         }
@@ -42,12 +63,13 @@ $(document).ready(function () {
 
     function displayQuestions() {
         //retrieve the first question and its values
-        question = Object.values(questions[theQuestions[questionCounter]]["question"]);
-        options = Object.values(questions[theQuestions[questionCounter]]["options"]);
-        answer = Object.values(questions[theQuestions[questionCounter]]["answer"]);
-        url = Object.values(questions[theQuestions[questionCounter]]["url"]);
-
-        $("#questionary").append(`<h3>${question.join("")}</h3>`);
+        console.log(question + " " + questionCounter);
+        question = questions[theQuestion]["question"];
+        options = questions[theQuestion]["options"];
+        answer = questions[theQuestion]["answer"];
+        url = questions[theQuestion]["url"];
+        $("#questionary").html("");
+        $("#questionary").append(`<h3>${question}</h3>`);
         options.forEach(element => {
             $("#questionary").append(`<option class = "selection" value ="${element}">
             ${element}</option>`);
@@ -56,37 +78,28 @@ $(document).ready(function () {
     // evaluating if answer wa right or wrong and adding to next question
     function nextQuestion(pushed) {
         questionCounter++;
+        theQuestion = theQuestions[questionCounter];
         if (pushed === answer) {
-            setTimeout(function () { $("#questionary").html(`<img src=${url} class = "image-responsive image">`); }, 3000);
+            var t = setTimeout(function () { $("#questionary").html(`<img src="${url}" class ="image-responsive image"`) }, 500);
+            clearTimeout(t);
             rigth++;
+            console.log(rigth);
         } else {
-            setTimeout(function () { $("#questionary").html(`<h1 class = "nope">NOOOOPPPEEE</h1>`); }, 3000);
+            setTimeout(function () { $("#questionary").html(`<h1 class = "nope">NOOOOPPPEEE</h1>`) }, 500);
             wrong++;
+            console.log(wrong);
         }
-        if (questionCounter <= theQuestions.length) {
-            displayQuestions();
+        if (questionCounter < theQuestions.length) {
+            setTimeout(displayQuestions(), 1000);
         }
     };
 
+    //$(staticAncestors).on(eventName, dynamicChild, function() {});
 
-    $(".selection").on("click", function () {
-        console.log($(this).text());
+    $("#questionary").on("click", ".selection", function () {
+        nextQuestion($(this).attr("value"));
     });
-    var questions = {
-        q1: {
-            question: "which state the Dukes of Hazard are from? ",
-            options: ["Colorado", "Texas", "Nevada", "Atlanta"],
-            answer: "Atlanta",
-            url: "https://giphy.com/gifs/4uqOvaKHcdntC/html5"
 
-        },
-        q2: {
-            question: "which movie Mel Gibson produce that won an Oscar",
-            options: ["The Patriot", "Brave Heart", "Mad Max", "Master and Comander"],
-            answer: "Brave Heart",
-            url: "https://giphy.com/gifs/7bovEc0yoXlOE/html5"
-        }
-    }
     //resizing the container and the body
     $(window).resize(function () {
         $("body").height($(window).height());
