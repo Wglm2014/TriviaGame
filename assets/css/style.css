@@ -1,0 +1,43 @@
+body {
+    background-image: url("../images/container-image.jpg");
+}
+.container{
+    background-image: url("../images/document-background.jpg");
+    background-repeat: no-repeat; 
+    border: darkgreen;
+    border-style: solid;
+    margin: 5% auto 25% auto;
+    width: 80%
+}
+
+#game-header{
+    margin-top:5%;
+    font-weight: bolder;
+    color: aquamarine
+}
+#play,#questionay {
+    margin:10% auto 10% auto;
+    font-weight: bolder;
+}
+
+.selection {
+    display: block;
+    border: 1px;
+    border-style: solid;
+    background: burlywood;
+    margin: 1em auto 1em auto;
+}
+
+.selection:hover {
+    background: rgb(216, 155, 75);
+    border-style: outset;
+}
+
+.image{
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.nope{
+    color: red;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <h2>question</h2>
+    <dl>
+
+        <li class="selection">answer 1</li>
+        <li class="selection">answer 1</li>
+        <li class="selection">answer 1</li>
+
+    </dl>
+    <style>
+        .selection {
+            display: block;
+            border: 1px;
+            border-style: solid;
+            background: burlywood;
+        }
+
+        .selection:hover {
+            background: rgb(216, 155, 75);
+            border-style: outset;
+        }
+
+        .selection::selection {
+            border-style: inset;
+        }
+    </style>
+</body>
+
+</html>
