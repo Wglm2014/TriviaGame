@@ -25,7 +25,7 @@ To run it on the web follow the instuctions provided by github documentation [Gi
 ### client side for the user interface.
 * Visual Studio Code
 * HTML, CSS, Javascriopt
-* JQUERY, BOOTSTRAP,AJAX
+* JQUERY, BOOTSTRAP
 
 # Author
 * Wilson Linares 
